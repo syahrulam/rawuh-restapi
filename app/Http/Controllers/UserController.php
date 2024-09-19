@@ -10,7 +10,6 @@ use Validator;
 
 class UserController extends Controller
 {
-    // Login method
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -28,7 +27,6 @@ class UserController extends Controller
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
-        // Create a personal access token
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response()->json([
@@ -38,10 +36,8 @@ class UserController extends Controller
         ]);
     }
 
-    // Logout method
     public function logout(Request $request)
     {
-        // Revoke the current token
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
@@ -67,7 +63,6 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Create token
         $token = $user->createToken('authToken')->plainTextToken;
 
         return response()->json([
@@ -76,7 +71,7 @@ class UserController extends Controller
             'user' => $user,
         ]);
     }
-    
+
     public function index()
     {
         $users = User::all();
@@ -114,7 +109,6 @@ class UserController extends Controller
             return response()->json(['error' => 'User not found'], 404);
         }
     
-        // Update user data
         $user->name = $request->get('name', $user->name);
         $user->email = $request->get('email', $user->email);
     
